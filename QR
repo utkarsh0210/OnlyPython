@@ -1,0 +1,8 @@
+import qrcode as qr
+git_img = qr.make("https://github.com/utkarsh0210")
+git_img.save("Github.png")
+
+linkedin_img = qr.make("https://www.linkedin.com/in/utkarsh-gupta-650605253/")
+linkedin_img.save("LinkedIn.png")
+
+
