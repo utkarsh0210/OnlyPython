@@ -1,0 +1,38 @@
+from tkinter import *
+import speedtest
+
+
+def speedcheck():
+    s=speedtest.Speedtest()
+    s.get_servers()
+    down = str(round(s.download()/(10**6),3))+"Mbps"
+    up = str(round(s.download()/(10**6),3))+"Mbps"
+    lab_d.config(text=down)
+    lab_u.config(text=up)
+
+
+sp=Tk()
+sp.title(" Internet Speed Test ")
+sp.geometry("500x400")
+sp.config(bg="black")
+
+lab = Label(sp,text="Internet Speed Test",font=("Time New Roman",30),bg="black",fg="white")
+lab.place(x=75,y=10)
+
+lab_= Label(sp,text="Download Speed ",font=("Time New Roman",20),bg="black",fg="white")
+lab.place(x=90,y=80)
+
+lab_d = Label(sp,text="00",font=("Time New Roman",20),bg="black",fg="white")
+lab_d.place(x=90,y=120)
+
+lab = Label(sp,text="Upload Speed",font=("Time New Roman",20),bg="black",fg="white")
+lab.place(x=90,y=160)
+
+lab_u = Label(sp,text="00",font=("Time New Roman",20),bg="black",fg="white")
+lab_u.place(x=90,y=200)
+
+button = Button(sp,text = "CHECK",font=("Time New Roman",20),bg="red",relief=RAISED,command=speedcheck())
+button.place(x=175,y=280,height = 40)
+
+
+sp.mainloop()
