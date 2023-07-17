@@ -1,0 +1,29 @@
+ch=input("Do you want to download a (1)video or a (2)playlist : ")
+if ch=='1':
+    # ****** Video *******
+    from pytube import YouTube
+    link_video = input("Enter the link of video : ")
+    yt_1 = YouTube(link_video)
+    print(yt_1.title)
+    #print(yt_1.thumbnail_url)
+
+    vd = yt_1.streams.all() # it presents all formats on the console
+    vid = list(enumerate(vd))
+    for i in vd:
+        print(i)
+    print()
+    strm = int(input("Enter your choice : "))
+    vd[strm].download()
+    print(" Successfully downloaded ")
+
+elif ch=='2':
+
+    # *****Playlist******
+    from pytube import Playlist
+    link_playlist = input("Enter the link of playlist : ")
+    print(f'Downloading : {link_playlist.title}')
+    for video in link_playlist.videos:
+        video.streams.first().download()
+
+else:
+    print("Wrong Choice !!!")
