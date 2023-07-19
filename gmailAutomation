@@ -1,0 +1,16 @@
+import smtplib as s
+username=input("Enter username to login :")
+password=input("Enter password to login :")
+ob=s.SMTP('smtp.gmail.com',587)
+ob.ehlo()
+ob.starttls()
+ob.login(username,password)
+
+subject="Subject"
+body="Hello"
+message = "subject:{}\n\n{}".format(subject,body)
+listadd=['']
+ob.sendmail(username,listadd,message)
+print("Mail sent !!")
+ob.quit()
+
