@@ -107,13 +107,38 @@ if __name__ == "__main__":
             vd[strm].download()
             print(" Successfully downloaded ")
 
-        elif 'scan' in query:
+        elif 'scanner' in query:
             import qrcode as qr
             git_img = qr.make("https://github.com/utkarsh0210")
             git_img.save("Github.png")
 
             linkedin_img = qr.make("https://www.linkedin.com/in/utkarsh-gupta-650605253/")
             linkedin_img.save("LinkedIn.png")
+
+        elif 'screen recording' in query:
+            import cv2
+            import pyautogui
+            from win32api import GetSystemMetrics
+            import numpy as np
+            import time
+            width = GetSystemMetrics(0)
+            height = GetSystemMetrics(1)
+            dim = (width,height)
+            f= cv2.VideoWriter_fourcc(*"XVID")
+            output = cv2.VideoWriter("test.mp4",f,30.0,dim)
+            now_start_tine = time.time()
+            dur=10
+            end_time = now_start_tine + dur
+            while True:
+                image = pyautogui.screenshot()
+                frame_1 = np.array(image)
+                frame = cv2.cvtColor(frame_1,cv2.COLOR_BGR2RGB)
+                output.write(frame)
+                c_time = time.time()
+                if c_time > end_time :
+                    break
+            output.release()
+            speak("Recording Ended")
 
         elif 'the time' in query:
             strTime = datetime.datetime.now().strftime("%H:%M:%S")
