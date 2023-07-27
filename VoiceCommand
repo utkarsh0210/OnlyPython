@@ -121,7 +121,8 @@ if __name__ == "__main__":
 
         elif 'play music' in query:
             musicpath = "E:\music"
-            os.startfile(musicpath)
+            songs=os.listdir(musicpath)
+            os.startfile(os.path.join(musicpath,songs[0]))
 
         elif 'screen recording' in query:
             import cv2
