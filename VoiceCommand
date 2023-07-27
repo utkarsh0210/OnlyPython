@@ -115,6 +115,14 @@ if __name__ == "__main__":
             linkedin_img = qr.make("https://www.linkedin.com/in/utkarsh-gupta-650605253/")
             linkedin_img.save("LinkedIn.png")
 
+        elif 'play movie' in query:
+            moviepath = "C:/Users/utkun/OneDrive/Desktop/movies"
+            os.startfile(moviepath)
+
+        elif 'play music' in query:
+            musicpath = "E:\music"
+            os.startfile(musicpath)
+
         elif 'screen recording' in query:
             import cv2
             import pyautogui
@@ -167,7 +175,6 @@ if __name__ == "__main__":
             datetime.sleep(a)
             print(a)
             #i=i+1
-
 
         #elif 'is love' in query:
            # speak("It is 7th sense that destroy all other senses")
