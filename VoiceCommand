@@ -240,7 +240,7 @@ if __name__ == "__main__":
         elif 'quit' in query:
             exit()
             #i=i+1
-            
+  
 '''
         else:
             chat(query)
