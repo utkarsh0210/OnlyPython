@@ -1,5 +1,5 @@
 import turtle
-c=input("click 1 for pattern 1 , 2 for pattern 2 and n to exit")
+c=input("choose any number from 1 to 6 or press n to exit")
 t=turtle.Turtle()
 while(c!='n'):
     if(c=='1'):
@@ -46,4 +46,39 @@ while(c!='n'):
         t.fillcolor("yellow")
         t.circle(50)
         t.end_fill()
-        t.hideturtle()                    
+        t.hideturtle()
+    elif(c=='3'):
+        from sketchpy import library as lib
+        obj = lib.flag()
+        obj.draw()
+    elif(c=='4'):
+        from sketchpy import library as lib
+        obj = lib.rdj()
+        obj.draw()  
+    elif (c=='5'):
+        t.screen.bgcolor('black')
+        t.pensize(2)
+        t.color('green')
+        t.left(98)
+        t.backward(100)
+        t.shape('turtle')
+        def tree(i):
+            if i<10:
+                return
+            else:
+                t.forward(i)
+                t.color('orange')
+                t.circle(2)
+                t.color('brown')
+                t.left(30)
+                tree(3*i/4)
+                t.right(60)
+                tree(3*i/4)
+                t.left(30)
+                t.backward(i)
+        tree(100)
+        turtle.done()
+    elif(c=='6'):
+        from sketchpy import library as lib
+        obj = lib.vijay()
+        obj.draw()             
