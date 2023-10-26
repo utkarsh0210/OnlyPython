@@ -11,6 +11,9 @@ import ecapture
 import ecapture as ec
 import pyaudio
 import csv
+from tkinter import *
+import speedtest
+from todo import *
 
 
 engine = pyttsx3.init('sapi5')
@@ -37,49 +40,41 @@ def wishMe():
     speak("I am Jarvis , plese tell me how may I help you")
 
 '''
-def chat(query):
-    global chatStr
+def chat(chatStr):
     #print(chatStr)
-    openai.api_key = "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"
-    #chatStr += f"Utkarsh: {query}\n Jarvis: "
-    response = openai.Completion.create(
+    openai.api_key = "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"
+    chatStr += f"Utkarsh: {chatStr}\n Jarvis: "
+    response = openai.ChatCompletion.create(
         model="text-davinci-003",
         prompt=chatStr,
-        temperature=0.7,
-        max_tokens=256,
-        top_p=1,
-        frequency_penalty=0,
-        presence_penalty=0
     )
-    # todo: Wrap this inside of a  try catch block
     speak(response["choices"][0]["text"])
     chatStr += f"{response['choices'][0]['text']}\n"
     return response["choices"][0]["text"]
 
 
+
 def ai(prompt):
-    openai.api_key = "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"
+    openai.api_key = "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"
     text = f"OpenAI response for Prompt: {prompt} \n ********************\n\n"
+    try:
+        response = openai.ChatCompletion.create(
+            model="text-davinci-003",
+            prompt=prompt,
+        )
+        # print(response["choices"][0]["text"])
+        text += response["choices"][0]["text"]
+        if not os.path.exists("Openai"):
+            os.mkdir("Openai")
 
-    response = openai.Completion.create(
-        model="text-davinci-003",
-        prompt=prompt,
-        temperature=0.7,
-        max_tokens=256,
-        top_p=1,
-        frequency_penalty=0,
-        presence_penalty=0
-    )
-    # print(response["choices"][0]["text"])
-    text += response["choices"][0]["text"]
-    if not os.path.exists("Openai"):
-        os.mkdir("Openai")
+        # with open(f"Openai/prompt- {random.randint(1, 2343434356)}", "w") as f:
+        with open(f"Openai/{''.join(prompt.split('search')[1:]).strip()}.txt", "w") as f:
+            f.write(text)
 
-    # with open(f"Openai/prompt- {random.randint(1, 2343434356)}", "w") as f:
-    with open(f"Openai/{''.join(prompt.split('search')[1:]).strip()}.txt", "w") as f:
-        f.write(text)
+    except openai.error.RateLimitError as e:
+    # Handle the rate limit error here, you might want to retry after some time or notify the user.
+        print("Rate limit exceeded. Please wait and try again later.")
 '''
-
 
 def takeCommand():
     #it takes input from microphone and returns a string output
@@ -167,10 +162,15 @@ if __name__ == "__main__":
             moviepath = "C:/Users/utkun/OneDrive/Desktop/movies"
             os.startfile(moviepath)
 
-        elif 'play music' in query:
+        elif 'play some music' in query:
             musicpath = "E:\music"
             songs=os.listdir(musicpath)
-            os.startfile(os.path.join(musicpath,songs[0]))
+            os.startfile(os.path.join(musicpath,songs[random.randint(1,10)]))
+
+        elif 'shuffle the music' in query:
+            musicpath = "E:\music"
+            songs=os.listdir(musicpath)
+            os.startfile(os.path.join(musicpath,songs[random.randint(1,10)]))
 
         elif 'screen recording' in query:
             import cv2
@@ -206,6 +206,44 @@ if __name__ == "__main__":
             codePath = "C:\\Users\\utkun\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
             os.startfile(codePath)
             #i=i+1
+        
+
+        elif 'net speed' in query :
+            def speedcheck():
+                s=speedtest.Speedtest()
+                s.get_servers()
+                down = str(round(s.download()/(10**6),3))+"Mbps"
+                up = str(round(s.download()/(10**6),3))+"Mbps"
+                lab_d.config(text=down)
+                lab_u.config(text=up)
+
+
+            sp=Tk()
+            sp.title(" Internet Speed Test ")
+            sp.geometry("500x400")
+            sp.config(bg="black")
+
+            lab = Label(sp,text="Internet Speed Test",font=("Time New Roman",30),bg="black",fg="white")
+            lab.place(x=75,y=10)
+
+            lab= Label(sp,text="Download Speed ",font=("Time New Roman",20),bg="black",fg="white")
+            lab.place(x=90,y=80)
+
+            lab_d = Label(sp,text="00",font=("Time New Roman",20),bg="black",fg="white")
+            lab_d.place(x=90,y=120)
+
+            lab = Label(sp,text="Upload Speed",font=("Time New Roman",20),bg="black",fg="white")
+            lab.place(x=90,y=160)
+
+            lab_u = Label(sp,text="00",font=("Time New Roman",20),bg="black",fg="white")
+            lab_u.place(x=90,y=200)
+
+            button = Button(sp,text = "CHECK",font=("Time New Roman",20),bg="red",relief=RAISED,command=speedcheck())
+            button.place(x=175,y=280,height = 40)
+
+
+            sp.mainloop()
+
 
         elif 'camera' in query or 'photo' in query:
             ec.capture(0, "jarvis camera","img.jpg")
@@ -217,6 +255,9 @@ if __name__ == "__main__":
             file = open('jarvis.txt', 'w')
             file.write(note)
             #i=i+1
+
+        elif 'to do list' in query:
+            todoApp()
 
         elif "don't listen" in query or "stop listening" in query:
             speak("for how much time you want to stop jarvis")
@@ -240,13 +281,14 @@ if __name__ == "__main__":
         elif 'quit' in query:
             exit()
             #i=i+1
-  
 '''
-        else:
-            chat(query)
-
         elif 'search'.lower() in query.lower():
             ai(prompt=query)
+            
+        else:
+            chat(chatStr=query)
 '''
+
+        
 
         
