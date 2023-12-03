@@ -1,12 +1,15 @@
 import pyttsx3
 import datetime
+import time
 import speech_recognition as sr
 import wikipedia
 import webbrowser
 import openai
+import pyjokes
 import random
 import os
 import smtplib
+import subprocess
 import ecapture
 import ecapture as ec
 import pyaudio
@@ -18,7 +21,7 @@ import speedtest
 engine = pyttsx3.init('sapi5')
 voices=engine.getProperty('voices')
 #print(voices[1].id)
-engine.setProperty('voice',voices[1].id)
+engine.setProperty('voice',voices[0].id)
 
 
 def speak(audio):
@@ -35,8 +38,8 @@ def wishMe():
 
     else:
         speak("good evening")
-
-    speak("I am Jarvis , plese tell me how may I help you")
+    
+    speak("I am bhaarrvishya , plese tell me how may I help you")
 
 '''
 def chat(chatStr):
@@ -101,7 +104,9 @@ if __name__ == "__main__":
         query = takeCommand().lower()
 
     # logic for executing tasks based on query
-        if 'wikipedia' in query:
+        if 'about yourself' in query:
+            speak('My name is bharvishya. It comprises of two words that is Bharat and Bhavishya. Which means Indias future')
+        elif 'wikipedia' in query:
             speak("Searching wikipedia...")
             query = query.replace("wikipedia", "")
             results = wikipedia.summary(query, sentences=2)
@@ -115,18 +120,24 @@ if __name__ == "__main__":
             #i=i+1
 
         elif 'open google' in query:
+            speak("Here you go to Google.Enjoy exploring")
             webbrowser.open("google.com")
             #i=i+1
+
+        elif 'search' in query:
+            query = query.replace("search", "")           
+            webbrowser.open(query)
 
         elif 'open chatGPT' in query:
             webbrowser.open("https:\\//chat.openai.com\/chat")
 
         elif 'open stack overflow' in query:
+            speak("Here you go to Stack Overflow. Happy coding")
             webbrowser.open("stackoverflow.com")
             i=i+1
 
-        elif 'open github' in query:
-            webbrowser.open("github.com")
+        elif 'open my github' in query:
+            webbrowser.open("https://github.com/utkarsh0210")
             #i=i+1
 
         elif 'open webkiosk' in query:
@@ -157,19 +168,31 @@ if __name__ == "__main__":
             linkedin_img = qr.make("https://www.linkedin.com/in/utkarsh-gupta-650605253/")
             linkedin_img.save("LinkedIn.png")
 
-        elif 'play movie' in query:
-            moviepath = "C:/Users/utkun/OneDrive/Desktop/movies"
+        elif 'display movies' in query:
+            speak("Enjoy your time sir!!")
+            moviepath = "E:\MojMasti\movies"
             os.startfile(moviepath)
 
         elif 'play some music' in query:
-            musicpath = "E:\music"
+            speak("Here you go with music")
+            musicpath = "E:\MojMasti\music"
             songs=os.listdir(musicpath)
             os.startfile(os.path.join(musicpath,songs[random.randint(1,10)]))
 
-        elif 'shuffle the music' in query:
-            musicpath = "E:\music"
+        elif 'shuffle it' in query:
+            musicpath = "E:\MojMasti\music"
             songs=os.listdir(musicpath)
             os.startfile(os.path.join(musicpath,songs[random.randint(1,10)]))
+
+        elif "who are you" in query:
+            speak("I am your virtual assistant created by Utkarsh")
+
+        elif "where is" in query:
+            query = query.replace("where is", "")
+            location = query
+            speak("User asked to Locate")
+            speak(location)
+            webbrowser.open("https://www.google.nl / maps / place/" + location + "")
 
         elif 'screen recording' in query:
             import cv2
@@ -206,7 +229,6 @@ if __name__ == "__main__":
             os.startfile(codePath)
             #i=i+1
         
-
         elif 'internet speed' in query :
             def speedcheck():
                 s=speedtest.Speedtest()
@@ -239,10 +261,9 @@ if __name__ == "__main__":
 
             button = Button(sp,text = "CHECK",font=("Time New Roman",20),bg="red",relief=RAISED,command=speedcheck())
             button.place(x=175,y=280,height = 40)
-
+            time.sleep(4)
 
             sp.mainloop()
-
 
         elif 'camera' in query or 'photo' in query:
             ec.capture(0, "jarvis camera","img.jpg")
@@ -343,13 +364,18 @@ if __name__ == "__main__":
             Button(root,image=Delete_icon,bd=0,cursor="hand2",command=deleteTask).pack(side=BOTTOM,pady=13)
             root.mainloop()
 
-
         elif "don't listen" in query or "stop listening" in query:
-            speak("for how much time you want to stop jarvis")
+            speak("for how much time you want to stop Bharvishya")
             a = int(takeCommand())
-            datetime.sleep(a)
+            time.sleep(a)
             print(a)
-            #i=i+1
+
+        elif 'how are you' in query:
+            speak("I am fine, Thank you")
+            speak("How are you, Sir")
+ 
+        elif 'fine' in query:
+            speak("It's good to know that your fine")
 
         elif 'open snipping tool' in query:
             snip_tool = open("%windir%\\system32\\SnippingTool.exe")
@@ -360,20 +386,37 @@ if __name__ == "__main__":
             what_sapp=csv.reader(what_sapp)
             #i=i+1
 
-        elif 'open linkedin' in query:
-            webbrowser.open("www.linkedin.com")
+        elif 'show my linkedin' in query:
+            webbrowser.open("https://www.linkedin.com/in/utkarsh-gupta-650605253/")
             
-        elif 'quit' in query:
+        elif 'exit' in query:
+            speak("Thanks for giving me your time")
             exit()
-            #i=i+1
-'''
+
+        elif "who made" in query or "who created" in query: 
+            speak("I have been created by Utkarsh.")
+
+        elif "morning" in query:
+            speak("A warm good" +query+"to you too")
+            speak("How are you Mister")
+
+        elif 'joke' in query:
+            speak(pyjokes.get_joke())
+
+        elif "why you came to world" in query:
+            speak("Thanks to Utkarsh. further It's a secret")
+
+        elif 'shutdown' in query:
+            speak("Hold On a Sec ! Your system is on its way to shut down")
+            subprocess.call('shutdown / p /f')
+
+        elif "restart" in query:
+            subprocess.call(["shutdown", "/r"])
+
+        '''
         elif 'search'.lower() in query.lower():
             ai(prompt=query)
             
         else:
             chat(chatStr=query)
 '''
-
-        
-
-        
